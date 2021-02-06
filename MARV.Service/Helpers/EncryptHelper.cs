@@ -14,7 +14,7 @@ namespace MARV.Service.Helpers
             MD5 md5 = new MD5CryptoServiceProvider();
 
             //compute hash from the bytes of text  
-            md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(contenido));
+            md5.ComputeHash(ASCIIEncoding.UTF8.GetBytes(contenido));
 
             //get hash result after compute it  
             byte[] result = md5.Hash;

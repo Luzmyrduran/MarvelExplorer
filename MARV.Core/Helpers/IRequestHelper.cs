@@ -13,6 +13,6 @@ namespace MARV.Core.Helpers
         /// </summary>
         /// <param name="endPoint"></param>
         /// <returns></returns>
-        Task<RequestResultDto> RequestGet(string endPoint);
+        string RequestGet(string endPoint);
     }
 }
