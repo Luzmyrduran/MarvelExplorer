@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using MARV.Core.DTO.Generales;
 using MARV.Core.Helpers;
+using MARV.Core.Model;
 using MARV.Core.Services;
 using MARV.Data;
 using MARV.Service;
 using MARV.Service.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +34,22 @@ namespace MARV.Web
             string defaultConnection = Configuration["ConnectionStrings:DefaultConnection"];
             services.AddScoped<DbContext, MarvelContext>();
             services.AddDbContext<MarvelContext>(options => options.UseSqlServer(defaultConnection));
+
+            services.AddIdentity<Usuario, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+            }).AddEntityFrameworkStores<MarvelContext>().AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Cuenta/Login";
+                options.SlidingExpiration = true;
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+            });
 
             services.AddTransient<CredencialesMarvelDto>(x => Configuration.GetSection("CredencialesMarvel").Get<CredencialesMarvelDto>());
 
@@ -59,6 +77,7 @@ namespace MARV.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
