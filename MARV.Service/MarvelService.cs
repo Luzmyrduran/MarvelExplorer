@@ -40,7 +40,10 @@ namespace MARV.Service
                 ? input.Ascendente ? "name" : "-name"
                 : input.Ascendente ? "modified" : "-modified";
 
-            string endpointFullData = $"{ _endpointCharacters }?apikey={ _credenciales.PublicKey }&hash={ hash }&ts={ idTransaccion }&limit={ input.Limit }&nameStartsWith={ input.NameStartsWith }&orderBy={ orderBy }";
+            string endpointFullData = $"{ _endpointCharacters }?apikey={ _credenciales.PublicKey }&hash={ hash }&ts={ idTransaccion }&limit={ input.Limit }&orderBy={ orderBy }";
+            if (string.IsNullOrEmpty(input.NameStartsWith) == false)
+                endpointFullData = $"{ endpointFullData }&nameStartsWith={ input.NameStartsWith }";
+
             string stringJsonResult = _requestHelper.RequestGet(endpointFullData);
 
             BaseOutputDto response = JsonConvert.DeserializeObject<BaseOutputDto>(stringJsonResult);

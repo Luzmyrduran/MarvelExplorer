@@ -1,36 +1,39 @@
-﻿
+﻿@model MARV.Web.Models.Personajes.ListadoVm
 @{
     ViewData["Title"] = "Index";
 }
 
 <div>
-    <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+    <form method="GET" asp-controller="Personajes" asp-action="Index" class="contactForm">
+        <div asp-validation-summary="All"></div>
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
                     <label class="label" for="name">Nombre</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+                    <input type="text" asp-for="NameStartsWith" class="form-control" placeholder="Name">
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label class="label" for="email">Cantidad</label>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                    <input type="number" asp-for="Limit" class="form-control" placeholder="Email">
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label class="label" for="subject">Ordenar por</label>
-                    <select class="form-control">
-                        <option>Nombre</option>
+                    <select asp-for="OrderByNombre" class="form-control">
+                        <option value="@false">Fecha modificación</option>
+                        <option value="@true">Nombre</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label class="label" for="#">Orden</label>
-                    <select class="form-control">
-                        <option>Ascendente</option>
+                    <select asp-for="Ascendente" class="form-control">
+                        <option value="@false">Descendente</option>
+                        <option value="@true">Ascendente</option>
                     </select>
                 </div>
             </div>
@@ -45,64 +48,23 @@
 </div>
 
 <div class="row d-flex">
-    <div class="col-md-3 ftco-animate">
-        <div class="blog-entry align-self-stretch">
-            <a asp-controller="Personajes" asp-action="Detalle" class="block-20 rounded" style="background-image: url('@Url.Content("~/images/image_3.jpg")');">
-            </a>
-            <div class="text p-4">
-                <div class="meta mb-2">
-                    <div><a asp-controller="Personajes" asp-action="Detalle">Wolverine</a></div>
-                    <!-- <div><a href="#">Admin</a></div> -->
-                    <div><a asp-controller="Personajes" asp-action="Detalle" class="meta-chat"><span class="fa fa-comment"></span></a></div>
+    @foreach (var item in Model.Data.Results)
+    {
+        string thumbnailUrl = $"{ item.Thumbnail.Path }/portrait_xlarge.{ item.Thumbnail.Extension }";
+        <div class="col-md-3 ftco-animate">
+            <div class="blog-entry align-self-stretch">
+                <a asp-controller="Personajes" asp-action="Detalle" asp-route-id="@item.Id" class="block-20 rounded" style="background-image: url('@thumbnailUrl');">
+                </a>
+                <div class="text p-4">
+                    <div class="meta mb-2">
+                        <div><a asp-controller="Personajes" asp-action="Detalle" asp-route-id="@item.Id">@item.Name</a></div>
+                        <!-- <div><a href="#">Admin</a></div> -->
+                        <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span></a></div>
+                    </div>
+                    <h3 class="heading"><a asp-controller="Personajes" asp-action="Detalle" asp-route-id="@item.Id">Ver más...</a></h3>
                 </div>
-                <h3 class="heading"><a asp-controller="Personajes" asp-action="Detalle">Ver más...</a></h3>
             </div>
         </div>
-    </div>
-
-    <div class="col-md-3 ftco-animate">
-        <div class="blog-entry align-self-stretch">
-            <a asp-controller="Personajes" asp-action="Detalle" class="block-20 rounded" style="background-image: url('@Url.Content("~/images/image_3.jpg")');">
-            </a>
-            <div class="text p-4">
-                <div class="meta mb-2">
-                    <div><a asp-controller="Personajes" asp-action="Detalle">Iron man</a></div>
-                    <!-- <div><a href="#">Admin</a></div> -->
-                    <div><a asp-controller="Personajes" asp-action="Detalle" class="meta-chat"><span class="fa fa-comment"></span></a></div>
-                </div>
-                <h3 class="heading"><a asp-controller="Personajes" asp-action="Detalle">Ver más...</a></h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3 ftco-animate">
-        <div class="blog-entry align-self-stretch">
-            <a href="blog-single.html" class="block-20 rounded" style="background-image: url('@Url.Content("~/images/image_3.jpg")');">
-            </a>
-            <div class="text p-4">
-                <div class="meta mb-2">
-                    <div><a href="#">Spiderman</a></div>
-                    <!-- <div><a href="#">Admin</a></div> -->
-                    <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span></a></div>
-                </div>
-                <h3 class="heading"><a href="#">Ver más...</a></h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3 ftco-animate">
-        <div class="blog-entry align-self-stretch">
-            <a href="blog-single.html" class="block-20 rounded" style="background-image: url('@Url.Content("~/images/image_3.jpg")');">
-            </a>
-            <div class="text p-4">
-                <div class="meta mb-2">
-                    <div><a href="#">Spiderman</a></div>
-                    <!-- <div><a href="#">Admin</a></div> -->
-                    <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span></a></div>
-                </div>
-                <h3 class="heading"><a href="#">Ver más...</a></h3>
-            </div>
-        </div>
-    </div>
+    }
 </div>
 
