@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MARV.Core.DTO.Generales;
+using MARV.Core.Helpers;
 using MARV.Data;
+using MARV.Service.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +31,12 @@ namespace MARV.Web
             services.AddScoped<DbContext, MarvelContext>();
             services.AddDbContext<MarvelContext>(options => options.UseSqlServer(defaultConnection));
 
+            services.AddTransient<CredencialesMarvelDto>(x => Configuration.GetSection("CredencialesMarvel").Get<CredencialesMarvelDto>());
+
+            services.AddScoped<IRequestHelper, RequestHelper>();
+            services.AddScoped<IEncryptHelper, EncryptHelper>();
+
+            services.AddHttpClient();
             services.AddControllersWithViews();
         }
 
