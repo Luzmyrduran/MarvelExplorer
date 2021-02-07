@@ -1,5 +1,7 @@
 ﻿using MARV.Core.DTO.Marvel.Input;
 using MARV.Core.DTO.Marvel.Output;
+using MARV.Core.DTO.Usuario;
+using MARV.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,5 +24,26 @@ namespace MARV.Core.Services
         /// <param name="input"></param>
         /// <returns></returns>
         DataOutputDto GetListado(ListadoInputDto input);
+
+        /// <summary>
+        /// Registra un Like realizado por el usuario
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        Task RegistrarLikeAsync(UsuarioLike data);
+
+        /// <summary>
+        /// Obtiene un top de los personajes mas votados
+        /// </summary>
+        /// <param name="top"></param>
+        /// <returns></returns>
+        Task<List<GrupoLikeDto>> GetTop(int top = 5);
+
+        /// <summary>
+        /// Obtiene la lista de Likes realizados por un usuario
+        /// </summary>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        Task<List<UsuarioLike>> GetLikesByIdUser(string idUsuario);
     }
 }

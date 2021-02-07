@@ -1,7 +1,10 @@
 ﻿using MARV.Core.DTO.Generales;
 using MARV.Core.DTO.Marvel.Input;
 using MARV.Core.DTO.Marvel.Output;
+using MARV.Core.DTO.Usuario;
 using MARV.Core.Helpers;
+using MARV.Core.Model;
+using MARV.Core.Repositories;
 using MARV.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -17,10 +20,12 @@ namespace MARV.Service
     {
         private readonly IRequestHelper _requestHelper;
         private readonly IEncryptHelper _encryptHelper;
+        private readonly IUsuarioLikeRepository _usuarioLikeRepository;
         private readonly CredencialesMarvelDto _credenciales;
         private readonly string _endpointCharacters;
 
         public MarvelService(IConfiguration configuration,
+            IUsuarioLikeRepository usuarioLikeRepository,
             CredencialesMarvelDto credenciales,
             IRequestHelper requestHelper,
             IEncryptHelper encryptHelper)
@@ -28,6 +33,7 @@ namespace MARV.Service
             _credenciales = credenciales;
             _requestHelper = requestHelper;
             _encryptHelper = encryptHelper;
+            _usuarioLikeRepository = usuarioLikeRepository;
             _endpointCharacters = configuration["Endpoints:Characters"];
         }
 
@@ -61,6 +67,30 @@ namespace MARV.Service
 
             BaseOutputDto response = JsonConvert.DeserializeObject<BaseOutputDto>(stringJsonResult);
             return response.Data?.Results?.FirstOrDefault();
+        }
+
+        public async Task RegistrarLikeAsync(UsuarioLike data)
+        {
+            await _usuarioLikeRepository.RegistrarLikeAsync(data);
+            await _usuarioLikeRepository.SaveChangesAsync();
+        }
+
+        public async Task<List<UsuarioLike>> GetLikesByIdUser(string idUsuario)
+        {
+            return await _usuarioLikeRepository.GetLikesByIdUser(idUsuario);
+        }
+
+        public async Task<List<GrupoLikeDto>> GetTop(int top = 5)
+        {
+            List<GrupoLikeDto> lista = await _usuarioLikeRepository.GetGruposLike(top);
+
+            foreach(var grupo in lista)
+            {
+                ResultOutputDto result = GetCharacterById(grupo.IdCharacter);
+                grupo.Detalle = result;
+            }
+
+            return lista;
         }
     }
 }

@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using MARV.Core.DTO.Generales;
 using MARV.Core.Helpers;
 using MARV.Core.Model;
+using MARV.Core.Repositories;
 using MARV.Core.Services;
 using MARV.Data;
+using MARV.Data.Repositories;
 using MARV.Service;
 using MARV.Service.Helpers;
 using Microsoft.AspNetCore.Builder;
@@ -55,6 +57,8 @@ namespace MARV.Web
 
             services.AddScoped<IRequestHelper, RequestHelper>();
             services.AddScoped<IEncryptHelper, EncryptHelper>();
+
+            services.AddScoped<IUsuarioLikeRepository, UsuarioLikeRepository>();
 
             services.AddScoped<IMarvelService, MarvelService>();
 

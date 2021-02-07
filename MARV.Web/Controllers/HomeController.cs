@@ -6,21 +6,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MARV.Web.Models;
+using MARV.Core.Services;
+using MARV.Core.DTO.Marvel.Output;
+using MARV.Core.DTO.Usuario;
 
 namespace MARV.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IMarvelService _marvelService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IMarvelService marvelService)
         {
             _logger = logger;
+            _marvelService = marvelService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<GrupoLikeDto> resultados = await _marvelService.GetTop(5);
+            return View(resultados);
         }
 
         public IActionResult Privacy()
