@@ -30,6 +30,20 @@ namespace MARV.Core.Repositories
         Task<List<GrupoLikeDto>> GetGruposLike(int top = 5);
 
         /// <summary>
+        /// Obtiene un registro de like de la base de datos
+        /// </summary>
+        /// <param name="idUsuario"></param>
+        /// <param name="idCharacter"></param>
+        /// <returns></returns>
+        Task<UsuarioLike> GetLikeAsync(string idUsuario, string idCharacter);
+
+        /// <summary>
+        /// Remueve un registro de like de la base de datos
+        /// </summary>
+        /// <param name="data"></param>
+        void EliminarLike(UsuarioLike data);
+
+        /// <summary>
         /// Aplica los cambios realizados en la base de datos
         /// </summary>
         /// <returns></returns>

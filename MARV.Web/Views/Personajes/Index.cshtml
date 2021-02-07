@@ -51,6 +51,8 @@
     @foreach (var item in Model.Data.Results)
     {
         string thumbnailUrl = $"{ item.Thumbnail.Path }/portrait_xlarge.{ item.Thumbnail.Extension }";
+        bool like = Model.Likes.Select(x => x.IdCharacter).ToList().Contains(item.Id.ToString()) ? true : false;
+        string clase = like ? "characterLike" : "characterNoLike";
         <div class="col-md-3 ftco-animate">
             <div class="blog-entry align-self-stretch">
                 <a asp-controller="Personajes" asp-action="Detalle" asp-route-id="@item.Id" class="block-20 rounded" style="background-image: url('@thumbnailUrl');">
@@ -59,7 +61,10 @@
                     <div class="meta mb-2">
                         <div><a asp-controller="Personajes" asp-action="Detalle" asp-route-id="@item.Id">@item.Name</a></div>
                         <!-- <div><a href="#">Admin</a></div> -->
-                        <div><a href="#" class="meta-chat"><span class="fa fa-heart" style="color: red;"></span></a></div>
+                        @if (User.Identity.IsAuthenticated)
+                        { 
+                            <div><a href="#" class="meta-chat"><span class="fa fa-heart @clase" data-idcharacter="@item.Id"></span></a></div>
+                        }
                     </div>
                     <h3 class="heading"><a asp-controller="Personajes" asp-action="Detalle" asp-route-id="@item.Id">Ver más...</a></h3>
                 </div>

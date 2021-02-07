@@ -1,4 +1,5 @@
 ﻿using MARV.Core.DTO.Marvel.Output;
+using MARV.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,11 +10,6 @@ namespace MARV.Web.Models.Personajes
 {
     public class ListadoVm
     {
-        //public ListadoVm()
-        //{
-        //    Data = new DataOutputDto() { Results = new List<ResultOutputDto>() };
-        //}
-
         /// <summary>
         /// Return characters with names that begin with the specified string (e.g. Sp)
         /// </summary>
@@ -39,5 +35,10 @@ namespace MARV.Web.Models.Personajes
         /// 
         /// </summary>
         public DataOutputDto Data { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<UsuarioLike> Likes { get; set; }
     }
 }

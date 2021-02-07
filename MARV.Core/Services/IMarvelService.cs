@@ -45,5 +45,12 @@ namespace MARV.Core.Services
         /// <param name="idUsuario"></param>
         /// <returns></returns>
         Task<List<UsuarioLike>> GetLikesByIdUser(string idUsuario);
+
+        /// <summary>
+        /// Remueve un like de la base de datos
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        Task QuitarLikeAsync(UsuarioLike data);
     }
 }

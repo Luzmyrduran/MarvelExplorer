@@ -22,14 +22,22 @@ namespace MARV.Data.Repositories
 
         public async Task<List<UsuarioLike>> GetLikesByIdUser(string idUsuario)
         {
-            
-
             return await _db.UsuarioLike.Where(x => x.IdUsuario == idUsuario).ToListAsync();
         }
 
         public async Task RegistrarLikeAsync(UsuarioLike data)
         {
             await _db.UsuarioLike.AddAsync(data);
+        }
+
+        public async Task<UsuarioLike> GetLikeAsync(string idUsuario, string idCharacter)
+        {
+            return await _db.UsuarioLike.FirstOrDefaultAsync(x => x.IdUsuario == idUsuario && x.IdCharacter == idCharacter);
+        }
+
+        public void EliminarLike(UsuarioLike data)
+        {
+            _db.UsuarioLike.Remove(data);
         }
 
         public async Task SaveChangesAsync()

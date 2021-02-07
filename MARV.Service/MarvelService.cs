@@ -75,6 +75,13 @@ namespace MARV.Service
             await _usuarioLikeRepository.SaveChangesAsync();
         }
 
+        public async Task QuitarLikeAsync(UsuarioLike data)
+        {
+            UsuarioLike registro = await _usuarioLikeRepository.GetLikeAsync(data.IdUsuario, data.IdCharacter);
+            _usuarioLikeRepository.EliminarLike(registro);
+            await _usuarioLikeRepository.SaveChangesAsync();
+        }
+
         public async Task<List<UsuarioLike>> GetLikesByIdUser(string idUsuario)
         {
             return await _usuarioLikeRepository.GetLikesByIdUser(idUsuario);
