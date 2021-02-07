@@ -51,7 +51,7 @@ namespace MARV.Data.Repositories
                    .Select(g => new { IdCharacter = g.Key, count = g.Count() }).ToListAsync();
 
             List<GrupoLikeDto> lista = new List<GrupoLikeDto>();
-            foreach(var grupo in grupos)
+            foreach(var grupo in grupos.OrderByDescending(x=>x.count))
             {
                 lista.Add(new GrupoLikeDto()
                 {
@@ -60,7 +60,7 @@ namespace MARV.Data.Repositories
                 });
             }
 
-            return lista.Take(top).OrderByDescending(x => x.Cantidad).ToList();
+            return lista.Take(top).ToList();
         }
     }
 }
