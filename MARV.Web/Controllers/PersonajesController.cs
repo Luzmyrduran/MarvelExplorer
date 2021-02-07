@@ -26,6 +26,7 @@ namespace MARV.Web.Controllers
                 listado.Limit = 20;
                 listado.OrderByNombre = true;
                 listado.Ascendente = true;
+                ModelState.Clear();
             }
 
             listado.Data = _marvelService.GetListado(new Core.DTO.Marvel.Input.ListadoInputDto() { 
@@ -41,7 +42,15 @@ namespace MARV.Web.Controllers
         [HttpGet]
         public IActionResult Detalle(string id)
         {
-            return View();
+            try
+            {
+                ResultOutputDto result = _marvelService.GetCharacterById(id);
+                return View(result);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

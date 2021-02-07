@@ -1,13 +1,14 @@
-﻿
+﻿@model MARV.Core.DTO.Marvel.Output.ResultOutputDto
 @{
     ViewData["Title"] = "Detalle";
+    string thumbnailUrl = $"{ Model.Thumbnail.Path }/portrait_incredible.{ Model.Thumbnail.Extension }";
 }
 
 <section class="ftco-section ftco-no-pt ftco-no-pb">
     <div class="container">
         <div class="row d-flex no-gutters">
             <div class="col-md-5 d-flex">
-                <div class="img img-video align-self-stretch align-items-center justify-content-center justify-content-md-center mb-7 mb-sm-0" style="background-image:url(@Url.Content("~/images/about-1.jpg"));">
+                <div class="img img-video align-self-stretch align-items-center justify-content-center justify-content-md-center mb-7 mb-sm-0" style="background-image: url('@thumbnailUrl');">
                 </div>
             </div>
             <div class="col-md-7 pl-md-5 py-md-5">
@@ -19,21 +20,21 @@
                         <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-user"></span></div>
                         <div class="text pl-3">
                             <h4>Nombre</h4>
-                            <p>Estrella</p>
+                            <p>@Model.Name</p>
                         </div>
                     </div>
                     <div class="col-md-12 services-2 w-100 d-flex">
                         <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-book"></span></div>
                         <div class="text pl-3">
                             <h4>Descripción</h4>
-                            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit, sed eu vel curabitur dictumst pretium tristique, laoreet</p>
+                            <p>@Model.Description</p>
                         </div>
                     </div>
                     <div class="col-md-12 services-2 w-100 d-flex">
                         <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-calendar"></span></div>
                         <div class="text pl-3">
                             <h4>Ultima fecha de modificación</h4>
-                            <p>2013-10-24T13:09:30-0400</p>
+                            <p>@Model.Modified</p>
                         </div>
                     </div>
                 </div>
@@ -44,42 +45,54 @@
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row mb-5 pb-5">
-            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
-                <div class="d-block services text-center">
-                    <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="fa fa-info"></span>
-                    </div>
-                    <div class="media-body p-4">
-                        <h3 class="heading">Detalle</h3>
-                        <p></p>
-                        <a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
-                <div class="d-block services text-center">
-                    <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="fa fa-wikipedia-w"></span>
-                    </div>
-                    <div class="media-body p-4">
-                        <h3 class="heading">Wiki</h3>
-                        <p></p>
-                        <a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
+            @if (Model.Urls.Any(x => x.Type == "detail"))
+            {
+                <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                    <div class="d-block services text-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="fa fa-info"></span>
+                        </div>
+                        <div class="media-body p-4">
+                            <h3 class="heading">Detalle</h3>
+                            <p></p>
+                            <a href="@Model.Urls.FirstOrDefault(x => x.Type == "detail").Url" target="_blank" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
-                <div class="d-block services text-center">
-                    <div class="icon d-flex align-items-center justify-content-center">
-                        <span class="fa fa-link"></span>
-                    </div>
-                    <div class="media-body p-4">
-                        <h3 class="heading">Comiclink</h3>
-                        <p></p>
-                        <a href="#" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
+            }
+
+            @if (Model.Urls.Any(x => x.Type == "wiki"))
+            {
+                <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                    <div class="d-block services text-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="fa fa-wikipedia-w"></span>
+                        </div>
+                        <div class="media-body p-4">
+                            <h3 class="heading">Wiki</h3>
+                            <p></p>
+                            <a href="@Model.Urls.FirstOrDefault(x => x.Type == "wiki").Url" target="_blank" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+
+            @if (Model.Urls.Any(x => x.Type == "comiclink"))
+            {
+                <div class="col-md-4 d-flex align-self-stretch px-4 ftco-animate">
+                    <div class="d-block services text-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                            <span class="fa fa-link"></span>
+                        </div>
+                        <div class="media-body p-4">
+                            <h3 class="heading">Comiclink</h3>
+                            <p></p>
+                            <a href="@Model.Urls.FirstOrDefault(x => x.Type == "comiclink").Url" target="_blank" class="btn-custom d-flex align-items-center justify-content-center"><span class="fa fa-chevron-right"></span><i class="sr-only">Read more</i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+            
         </div>
     </div>
 </section>
